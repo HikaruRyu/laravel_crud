@@ -2,23 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Books;
+use App\Models\Materia;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Alumne;
 use Illuminate\Http\Request;
 
-class booksController extends Controller
+class AlumneController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
-
     {
-        $books = Books::all();
-        return view('books.index', ['books' => $books]);
+        // Obtener el curso del alumno autenticado
+        $alumne = Auth::user()->alumne;  
+        $curso = $alumne->curso;  
+    
+        // Filtrar las materias por el curso del alumno
+        $materies = Materia::where('grade', $grade)->get();
+    
+        // Pasar las materias filtradas a la vista
+        return view('dashboard', compact('materies'));
     }
-    {
-        //
-    }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -39,7 +46,7 @@ class booksController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Books $books)
+    public function show(Alumne $alumne)
     {
         //
     }
@@ -47,7 +54,7 @@ class booksController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Books $books)
+    public function edit(Alumne $alumne)
     {
         //
     }
@@ -55,7 +62,7 @@ class booksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Books $books)
+    public function update(Request $request, Alumne $alumne)
     {
         //
     }
@@ -63,7 +70,7 @@ class booksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Books $books)
+    public function destroy(Alumne $alumne)
     {
         //
     }

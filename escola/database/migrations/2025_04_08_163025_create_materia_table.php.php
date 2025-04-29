@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('day');
             $table->string('hour');
-            $table->foreignId('professor_id')->constrained('professors')->onDelete('cascade');
+            $table->foreignId('professor_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('alumne_materia', function (Blueprint $table) {
             $table->id();
-            $table->foreingId('alumne_id')->constrained('alumnes')->onDelete('cascade');
+            $table->foreignId('alumne_id')->constrained('alumnes')->onDelete('cascade');
             $table->foreignId('materia_id')->constrained('materies')->onDelete('cascade');
-        })
+            $table->timestamps(); // Añadí los timestamps para mantener las convenciones de Laravel
+        });
     }
 
     /**
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('alumne_materia');
     }
 };
