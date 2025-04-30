@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;  // Asegúrate de usar tu controlador adecu
 use App\Http\Controllers\MateriaController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Materia;
+use App\Http\Controllers\AlumneController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,6 +18,18 @@ Route::get('/dashboard', [Controller::class, 'index'])
 Route::resource('materies', MateriaController::class)->parameters([
     'materies' => 'materia'  
 ]);
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/materies/alumne', function () {
+        if (Auth::user()->is_professor) {
+            abort(403, 'Accés no autoritzat.');
+        }
+
+        return app(App\Http\Controllers\AlumneController::class)->index();
+    })->name('alumne.materies');
+});
+
 
 
 Route::middleware('auth')->group(function () {

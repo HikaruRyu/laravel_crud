@@ -11,7 +11,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    // If you want to keep the index method here (though it's better in MateriaController)
     public function index()
     {
         $materies = Materia::all();

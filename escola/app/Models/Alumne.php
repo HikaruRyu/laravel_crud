@@ -13,6 +13,6 @@ class Alumne extends Model
 
     public function materies()
     {
-        return $this->belongsToMany(Materia::class, 'alumne_materia');
-    }
+        return Materia::where('grade', $this->grade)->get();
+    }    
 }

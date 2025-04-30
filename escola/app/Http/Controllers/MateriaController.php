@@ -34,10 +34,11 @@ class MateriaController extends Controller
      */
     public function create()
     {
-        $materies = Materia::all();
+        $materies = Materia::where('professor_id', Auth::id())->get();
         
         return view('materies.create', compact('materies'));
     }
+    
     
     /**
      * Store a newly created resource in storage.
@@ -58,7 +59,7 @@ class MateriaController extends Controller
         $materia->grade = $validated['grade'];
         $materia->day = $validated['day'];
         $materia->hour = $validated['hour'];
-        $materia->professor_id = Auth::id(); // Asociar la materia al profesor autenticado
+        $materia->professor_id = Auth::id(); 
         $materia->save();
 
         return redirect()->route('dashboard')->with('success', 'Matèria creada exitosament');
@@ -85,9 +86,6 @@ class MateriaController extends Controller
         return view('materies.edit', compact('materia'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
 /**
  * Update the specified resource in storage.
  */

@@ -13,18 +13,15 @@ class AlumneController extends Controller
      * Display a listing of the resource.
      */
     
-    public function index()
-    {
-        // Obtener el curso del alumno autenticado
-        $alumne = Auth::user()->alumne;  
-        $curso = $alumne->curso;  
-    
-        // Filtrar las materias por el curso del alumno
-        $materies = Materia::where('grade', $grade)->get();
-    
-        // Pasar las materias filtradas a la vista
-        return view('dashboard', compact('materies'));
-    }
+     public function index()
+     {
+         $alumne = Auth::user()->alumne;
+     
+         $materies = \App\Models\Materia::where('grade', $alumne->grade)->get();
+     
+         return view('materies.alumne', compact('materies'));
+     }
+     
     
 
     /**
