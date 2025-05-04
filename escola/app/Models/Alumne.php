@@ -3,16 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Alumne extends Model
 {
-    public function user()
+    protected $fillable = ['user_id', 'grade'];
+
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function materies()
     {
-        return Materia::where('grade', $this->grade)->get();
-    }    
+        return $this->hasMany(Materia::class, 'grade', 'grade');
+    }
 }

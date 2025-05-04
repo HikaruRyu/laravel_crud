@@ -17,15 +17,12 @@ class MateriaController extends Controller
 
         $user = Auth::user();
 
-        // Si el usuario es un profesor, obtener las materias asociadas a su id
         if ($user->is_professor) {
             $materies = Materia::where('professor_id', $user->id)->get();
         } else {
-            // Si no es profesor, devolver una colección vacía
             $materies = collect();
         }
 
-        // Pasar las materias a la vista
         return view('dashboard', compact('materies'));
     }
 
@@ -34,10 +31,14 @@ class MateriaController extends Controller
      */
     public function create()
     {
+        if (!Auth::user()->is_professor) {
+            abort(403, 'Accés no autoritzat, només per a professors.');
+        }
+    
         $materies = Materia::where('professor_id', Auth::id())->get();
-        
         return view('materies.create', compact('materies'));
     }
+    
     
     
     /**
@@ -45,7 +46,7 @@ class MateriaController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar los datos del formulario
+        // Validar  dedes del formulari
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'grade' => 'required|string|max:255',
@@ -53,7 +54,7 @@ class MateriaController extends Controller
             'hour' => 'required|string|max:10',
         ]);
 
-        // Crear la nueva materia
+        // Crea nova materia
         $materia = new Materia();
         $materia->name = $validated['name'];
         $materia->grade = $validated['grade'];
@@ -62,7 +63,7 @@ class MateriaController extends Controller
         $materia->professor_id = Auth::id(); 
         $materia->save();
 
-        return redirect()->route('dashboard')->with('success', 'Matèria creada exitosament');
+        return redirect()->back()->with('success', 'Matèria creada exitosament');
     }
 
     /**
@@ -78,7 +79,6 @@ class MateriaController extends Controller
      */
     public function edit(Materia $materia)
     {
-        // Verificar que el profesor autenticado sea el propietario de la materia
         if ($materia->professor_id !== Auth::id()) {
             return redirect()->route('dashboard')->with('error', 'No tens permis para editar aquesta matèria');
         }

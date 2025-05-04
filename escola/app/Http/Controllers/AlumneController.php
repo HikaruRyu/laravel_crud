@@ -15,12 +15,16 @@ class AlumneController extends Controller
     
      public function index()
      {
+         if (Auth::user()->is_professor) {
+             abort(403, 'Accés no autoritzat, només per a alumnes.');
+         }
+     
          $alumne = Auth::user()->alumne;
-     
-         $materies = \App\Models\Materia::where('grade', $alumne->grade)->get();
-     
-         return view('materies.alumne', compact('materies'));
+         $materies = Materia::where('grade', $alumne->grade)->get();
+         
+         return view('alumnes.alumne', compact('materies'));
      }
+     
      
     
 
